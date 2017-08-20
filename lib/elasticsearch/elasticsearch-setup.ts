@@ -56,7 +56,7 @@ async function setupElasticSearch(downloadLink:string, unzipDestination:string) 
             console.log(stdout);
         });
     }
-    setTimeout(createIndexAndStuff,15000); // should find a better way to do this
+    setTimeout(createIndexAndStuff,60000); // should find a better way to do this
 }
 
 function downloadFile(downloadLink:string, dest:string) {

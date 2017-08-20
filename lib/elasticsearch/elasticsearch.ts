@@ -31,7 +31,7 @@ export async function createIndexAndStuff() {
                 body: {
                     counter: 0
                 }
-            }, (err, resp, status) => {
+            }, (err, resp) => {
                 console.log(resp);
             });
         }

@@ -38,17 +38,8 @@ export class ComplexNumber {
         return this.times(new ComplexNumber(-1,0));
     }
 
-    toStringTommy():string {
-        const operand = this.imaginaryPart < 0 ? '-' : '+';
-        const imaginaryPartByItself = `${Math.abs(this.imaginaryPart)}i`;
-        return this.realPart==0 
-            ? this.imaginaryPart==0 
-                ? '0'
-                : `${this.imaginaryPart.toString()}i`
-            : this.imaginaryPart==0 
-                ? this.realPart.toString()
-                : `${this.realPart} ${operand} ${imaginaryPartByItself}`;
-        
+    get complexConjugate():ComplexNumber {
+        return new ComplexNumber(this.realPart, this.imaginaryPart * -1);
     }
 
     toString():string {

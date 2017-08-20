@@ -29,3 +29,7 @@ const squares = list123.map(e => e * e);
 console.log(EmptyList.toString());
 console.log(list123);
 
+export interface Monad<T> {
+    identityElement:T;
+    binaryOperation:(t1:T, t2:T)=>T;
+}

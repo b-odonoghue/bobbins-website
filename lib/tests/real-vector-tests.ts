@@ -1,15 +1,15 @@
 import {expect} from 'chai';
 import {Let} from 'mocha-let-ts';
 import './support';
-import { Vector } from "../public/js/vector";
+import {RealVector} from "../public/js/real-vector";
 
 describe('Vector', () => {
     const composedArray = Let(()=>[] as number[]);
-    const vector = Let(() => new Vector(composedArray()));
+    const vector = Let(() => new RealVector(composedArray()));
 
     describe('constructor', () => {
         it('yields a new Vector', () => {
-            expect(vector()).to.be.an.instanceOf(Vector);
+            expect(vector()).to.be.an.instanceOf(RealVector);
         });
     });
 

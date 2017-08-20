@@ -1,29 +1,30 @@
+const path = require("path");
+
 module.exports = {
     entry: ['./lib/public/js/index.tsx'],
     output: {
         filename: './dist/public/js/bundle.js'
     },
-    exclude: [],
     devtool: "source-map",
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
     },
     module: {
-        loaders: [
-            { test: /\.tsx?$/, loader: "ts-loader" }
-        ],
-        preLoaders: [
-            { test: /\.js$/, loader: "source-map-loader" }
-        ],
         rules: [
-            // {
-                // test: /\.json$/,
-                // use: 'json-loader'
-            // }
+            {
+                test: /\.tsx?$/,
+                exclude: [
+                    /lib\/tests/,
+                    /lib\/test-portal\/elasticsearch/,
+                    /lib\/test-portal\/server/
+                ],
+                loader: "ts-loader"
+            },
+            {
+                test: /\.js$/,
+                enforce: "pre",
+                loader: "source-map-loader"
+            }
         ]
-    },
-    externals: {
-        // "react": "React",
-        // "react-dom": "ReactDOM"
     }
 };

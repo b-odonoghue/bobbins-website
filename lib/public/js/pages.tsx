@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Row, Column } from "./bootstrap";
-import * as ReactDOM from "@types/react-dom";
 import { getCounterValue, updateCounter } from "../../elasticsearch/elasticsearch";
 
 //-----Home Page-----//
@@ -47,7 +46,7 @@ const buttonStyle = {
     lineHeight: "3px"
 };
 
-class Counter extends React.Component<{display?:number}, void> {
+class Counter extends React.Component<{display?:number}, {}> {
   render() {
     const textStyle = {
         fontSize: 14,
@@ -61,7 +60,7 @@ class Counter extends React.Component<{display?:number}, void> {
   }
 };
 
-export class Page2 extends React.Component<void, {counter?:number}> {
+export class Page2 extends React.Component<{}, {counter?:number}> {
     constructor() {
         super();
         this.state = {}
@@ -71,7 +70,7 @@ export class Page2 extends React.Component<void, {counter?:number}> {
         getCounterValue().then(x => this.setState({counter:x}));
     }
 
-    private componentWillMount() {
+    componentWillMount() {
         this.getCounterValueAndSetState();
     }
 
@@ -87,7 +86,7 @@ export class Page2 extends React.Component<void, {counter?:number}> {
             <button style={buttonStyle} onClick={() => this.onClick()}>+</button>
         </div>
     }
-};
+}
 
 //-----Page 3-----//
 //Bouncing square using DOM
@@ -111,37 +110,40 @@ export class Box extends React.Component {
     }
 }
 
-export class BouncyBox extends React.Component <void, {x:number, y:number, vx:number, vy:number}> {
+export class BouncyBox extends React.Component <{}, {x:number, y:number, vx:number, vy:number}> {
     constructor() {
         super();
         this.state = {x: 50, y: 50, vx: 2, vy: 2};
-        var looptimer;
     }
+
     moveBall() {
         this.setState({x: this.state.x + this.state.vx, y: this.state.y + this.state.vy});
         if (this.state.x >= boxWidth - bouncyBoxWidth || this.state.x <= 0) this.setState({vx: this.state.vx * -1})
         if (this.state.y >= boxHeight - bouncyBoxHeight || this.state.y <= 0) this.setState({vy: this.state.vy * -1})
     }
-    private componentDidMount() {
+
+    componentDidMount() {
         looptimer = setInterval(this.moveBall.bind(this), 25);
     }
-    private componentWillUnmount() {
+
+    componentWillUnmount() {
         clearInterval(looptimer);
     }
+
     render() {
         const ballStyle = {
             width: `${bouncyBoxWidth}px`,
             height: `${bouncyBoxHeight}px`,
             backgroundColor: "blue",
-            position: "relative",
+            position: ("relative" as "relative"), //TODO: wtf? typescript compiler issue?
             top: `${this.state.y}px`,
             left: `${this.state.x}px`,
-        }
+        };
         return <div style={ballStyle}/>
     };
 }
 
-export const Page3 = () => <Box/>
+export const Page3 = () => <Box/>;
 
 //-----Page 4-----//
 // Bouncing ball using canvas. Stole this from the internet and added my own changes
@@ -151,6 +153,8 @@ var looptimer:any;
 var ctx:any;
 const canvasHeight = 400;
 const canvasWidth = 800;
+const canvasHeight = 400;
+const canvasWidth = 500;
 var ball = {
     position: {x: canvasWidth/2, y: 0},
     velocity: {x: 10, y: 0},
@@ -172,30 +176,34 @@ function drawCircle(ctx:any, x:number, y:number, radius:number) {
     ctx.closePath();
 }
 
-export class Canvas extends React.Component<void, void> {
+export class Canvas extends React.Component<{}, {}> {
     componentDidMount() {
-        ctx = this.refs.canvas.getContext('2d');
+        ctx = (this.refs.canvas as HTMLCanvasElement).getContext('2d');
         this.updateCanvas();
         looptimer = setInterval(this.moveBall.bind(this), frameDelay);
     }
-    componentWillUnmount() {
+     componentWillUnmount() {
         clearInterval(looptimer);
     }
+
     updateCanvas() {
         ctx.clearRect(0,0, canvasWidth, canvasHeight);
         ctx.save();
         drawCircle(ctx, ball.position.x, ball.position.y, ball.radius);
     }
+
     getMousePosition(e:any) {
-        mouse.x = e.pageX - canvas.offsetLeft;
-        mouse.y = e.pageY - canvas.offsetTop;
+        mouse.x = e.pageX - 0; //canvas.offsetLeft;
+        mouse.y = e.pageY - 0; //canvas.offsetTop;
     }
+
     mouseDown(e:any) {
         this.getMousePosition(e);
         mouse.isDown = true;
         ball.position.x = mouse.x;
         ball.position.y = mouse.y;
     }
+
     mouseUp(e:any) {
         mouse.isDown = false;
         ball.velocity.y = (ball.position.y - mouse.y) / 10;
@@ -210,6 +218,7 @@ export class Canvas extends React.Component<void, void> {
             ball.radius -= growthValue;
         }
     }
+
     moveBall() {
         if (!mouse.isDown) {
             // Do physics
@@ -275,7 +284,4 @@ export class Canvas extends React.Component<void, void> {
 }
 
 export const Page4 = () => <Canvas>Browser does not support canvas.</Canvas>
-
-//-----Page 5-----//
-//blank
 export const Page5 = () => <div/>
